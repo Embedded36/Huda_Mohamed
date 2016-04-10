@@ -10,12 +10,11 @@
 #define        LED2_PIN_IDX                                                     23
 
 static const u8 External_Interrupt_Components_u8Leds_Pins[3] = {LED0_PIN_IDX,LED1_PIN_IDX,LED2_PIN_IDX};
-static u8 External_Interrupt_Components_u8LedState[3] = {0, 0, 0};
+//static u8 External_Interrupt_Components_u8LedState[3] = {0, 0, 0};
 static u8 CurrentServedLed = 3;
 static u8 Overflow_u8Counter = 0;
 static 	u8 LED_ON_OFF = 2;
 static u8 LED_OffBlank = 0;
-static u8 Led2KeepState = 0, Led1KeepState = 0, Led0KeepState=0;
 
 
 void INT0_ISR_APP(void );
@@ -36,51 +35,31 @@ while(1)
 	Keypad_u8Read(&KeyPadVal);
 	switch(KeyPadVal)
 	{
-	case 1:
+	case 5:
 		CurrentServedLed = 0;
 		break;
 		////////////////////////////////////////////////
-	case 2:
+	case 6:
 		CurrentServedLed = 1;
 		break;
 		///////////////////////////////////////////////
-	case 3:
+	case 7:
 		CurrentServedLed = 2;
 		break;
 	default:
 		break;
 	}
-	Led0KeepState = (LED_OffBlank <<2) | (LED_ON_OFF<<1) | External_Interrupt_Components_u8LedState[0];
-	Led1KeepState = (LED_OffBlank <<2) | (LED_ON_OFF<<1) | External_Interrupt_Components_u8LedState[1];
-	Led2KeepState = (LED_OffBlank <<2) | (LED_ON_OFF<<1) | External_Interrupt_Components_u8LedState[2];
-
-	if(Led0KeepState == 7)
+	if(LED_OffBlank == 1)
 	{
-	 DIO_u8WritePin(External_Interrupt_Components_u8Leds_Pins[0], 1);
-	}
-	else if(Led0KeepState == 5)
-	{
-		  DIO_u8WritePin(External_Interrupt_Components_u8Leds_Pins[0], 0);
-	}
-	else{}
-	//////////////////////////////////////////////
-if(Led1KeepState == 7)
-	{
-	 DIO_u8WritePin(External_Interrupt_Components_u8Leds_Pins[1], 1);
-	}
-	else if(Led1KeepState == 5)
-	{
-		  DIO_u8WritePin(External_Interrupt_Components_u8Leds_Pins[1], 0);
-	}
-	else{}
-////////////////////////////////
-if(Led2KeepState == 7)
-	{
-	 DIO_u8WritePin(External_Interrupt_Components_u8Leds_Pins[2], 1);
-	}
-	else if(Led2KeepState == 5)
-	{
-		  DIO_u8WritePin(External_Interrupt_Components_u8Leds_Pins[2], 0);
+		if(LED_ON_OFF == 1)
+		{
+			  DIO_u8WritePin(External_Interrupt_Components_u8Leds_Pins[CurrentServedLed], 1);
+		}
+		else if(LED_ON_OFF == 0)
+		{
+			  DIO_u8WritePin(External_Interrupt_Components_u8Leds_Pins[CurrentServedLed], 0);
+		}
+		else{}
 	}
 	else{}
 
@@ -108,7 +87,7 @@ void Timer0_OverflowAPP(void )
 	}
 	if((LED_OffBlank == 1) && (Overflow_u8Counter == 4))
 	{
-		External_Interrupt_Components_u8LedState[CurrentServedLed] = 1;
+		//External_Interrupt_Components_u8LedState[CurrentServedLed] = 1;
 		LED_ON_OFF = !LED_ON_OFF;
 		Overflow_u8Counter = 0;
 	}
