@@ -19,7 +19,7 @@
  * PRESCALLER_INIT_VAL = EXTERNAL_RISING_EDGE
  * PRESCALLER_INIT_VAL = EXTERNAL_FALLING_EDGE
  */
-#define PRESCALLER_INIT_VAL                                     CLKCPU_BY_1024
+#define PRESCALLER_INIT_VAL                                     CLKCPU_BY_256
 
 /*Comment!:
  * Defining Timer's working mode, It can take
